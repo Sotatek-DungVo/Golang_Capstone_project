@@ -41,7 +41,7 @@ const GameCardInfo: React.FC<GameCardInfoProps> = ({ gameDetail }) => {
       className="transition-all duration-300 cursor-pointer w-72 hover:scale-110"
     >
       <CardHeader floated={false} className="h-30">
-        <img src={gameCategory.imageUrl} alt={gameCategory.name} />
+        <img className="w-full max-h-28" src={gameCategory.imageUrl} alt={gameCategory.name} />
       </CardHeader>
       <CardBody className="text-center">
         <Typography variant="h5" color="blue-gray" className="mb-2">

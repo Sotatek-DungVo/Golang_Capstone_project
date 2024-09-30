@@ -3,11 +3,12 @@ import { GameCategoryDetail } from "../services/game-category/game-category.type
 import GameCategoryList from "./game-category/GameCategoryList";
 import { GameCategoryService } from "../services/game-category/game-category.service";
 import Menu from "./Menu";
+import { toast } from "react-toastify";
 
 const Sidebar: React.FC = () => {
   const [gameCategoryList, setGameCategoryList] = useState<
-    GameCategoryDetail[]
-  >([]);
+    GameCategoryDetail[] | null
+  >(null);
   useEffect(() => {
     const fetchGameCategories = async () => {
       try {
@@ -17,7 +18,10 @@ const Sidebar: React.FC = () => {
         });
 
         setGameCategoryList(data);
-      } catch (error) {
+      } catch (error: any) {
+        if (error.message) {
+          toast.error(error.message);
+        }
         console.log("error:", error);
       }
     };
@@ -27,9 +31,11 @@ const Sidebar: React.FC = () => {
 
   return (
     <div className="relative flex w-full max-w-[16rem] flex-col rounded-xl bg-white bg-clip-border p-4 text-gray-700 shadow-xl shadow-blue-gray-900/5">
-      <GameCategoryList gameCategories={gameCategoryList} />
-
       <Menu />
+
+      {gameCategoryList && (
+        <GameCategoryList gameCategories={gameCategoryList} />
+      )}
     </div>
   );
 };

@@ -8,7 +8,7 @@ export const AuthService = {
 
       return res.data;
     } catch (error) {
-      console.log("🚀 ~ all ~ error:", error);
+      return error;
     }
   },
 };

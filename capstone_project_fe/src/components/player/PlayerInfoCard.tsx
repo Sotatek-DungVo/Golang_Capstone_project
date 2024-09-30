@@ -29,10 +29,10 @@ const PlayerInfoCard: React.FC<PlayerInfoCardProps> = ({
         floated={false}
         shadow={false}
         color="transparent"
-        className="m-0 rounded-none"
+        className="m-0 rounded-none h-30"
       >
         <img
-          className="object-contain w-full max-h-52"
+          className="object-contain w-full max-h-28"
           src={avatarUrl}
           alt={name}
         />

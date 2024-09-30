@@ -4,6 +4,7 @@ import { GameService } from "../services/game/game.service";
 import { GameDetailAPI } from "../services/game/game.type";
 import { Typography } from "@material-tailwind/react";
 import GameDetail from "../components/game/GameDetail";
+import { toast } from "react-toastify";
 
 const GameDetailPage: React.FC = ({}) => {
   const { gameId } = useParams();
@@ -14,7 +15,10 @@ const GameDetailPage: React.FC = ({}) => {
       const data = await GameService.get(gameId);
 
       setGameDetail(data);
-    } catch (error) {
+    } catch (error: any) {
+      if (error.message) {
+        toast.error(error.message)
+      }
       console.log("🚀 ~ fetchGameDetail ~ error:", error);
     }
   };

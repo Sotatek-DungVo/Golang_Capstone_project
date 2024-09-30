@@ -7,6 +7,7 @@ export type LoginResponse = {
   token: string;
   username: string;
   avatarUrl: string;
+  error?: string;
 }
 
 export type UserResponse = {

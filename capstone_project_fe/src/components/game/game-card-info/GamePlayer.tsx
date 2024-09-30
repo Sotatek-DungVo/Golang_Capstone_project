@@ -6,7 +6,6 @@ type GamePlayerProps = {
 };
 
 const GamePlayer: React.FC<GamePlayerProps> = ({ gameRequests }) => {
-  console.log("🚀 ~ gameRequests:", gameRequests)
   return (
     <div className="flex items-center justify-between">
       {/* already joined game */}

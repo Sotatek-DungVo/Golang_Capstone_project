@@ -8,6 +8,8 @@ import GameCardInfo from "./game-card-info/GameCardInfo";
 import { Button } from "@material-tailwind/react";
 import { useEffect, useState } from "react";
 import GameDialogForm from "./GameDialogForm";
+import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
+import { toast } from "react-toastify";
 
 const GameList: React.FC = () => {
   const [page, setPage] = useState<number>(1);
@@ -21,7 +23,10 @@ const GameList: React.FC = () => {
       const data = await GameService.all(params);
 
       setGameData(data);
-    } catch (error) {
+    } catch (error: any) {
+      if (error.message) {
+        toast.error(error.message)
+      }
       console.log("🚀 ~ fetchGames ~ error:", error);
     }
   };
@@ -35,10 +40,34 @@ const GameList: React.FC = () => {
 
   return (
     <>
-      <div className="flex justify-between w-2/3">
-        <h3 className="px-10 pt-5 font-bold text-red-500">Games</h3>
+      <div className="flex justify-between pr-20">
+        <div className="flex items-center justify-between">
+          <h3 className="px-10 font-bold text-red-500">Games</h3>
 
-        <Button onClick={handleOpen} className="ml-20">Create Game</Button>
+          <div className="flex">
+          <Button
+            variant="text"
+            className="flex items-center gap-2"
+            onClick={() => setPage(page - 1)}
+            disabled={page === 1}
+          >
+            <FaArrowLeft strokeWidth={2} className="w-4 h-4" /> Previous
+          </Button>
+
+          <Button
+            variant="text"
+            className="flex items-center gap-2"
+            onClick={() => setPage(page + 1)}
+            disabled={!gameData}
+          >
+            <FaArrowRight strokeWidth={2} className="w-4 h-4" /> Next
+          </Button>
+        </div>
+        </div>
+
+        <Button onClick={handleOpen} className="ml-20">
+          Create Game
+        </Button>
       </div>
       <div className="grid grid-cols-2 px-10 pt-5 2xl:grid-cols-5 xl:grid-cols-4 lg:grid-cols-3 gap-x-5 gap-y-10">
         {gameData && gameData.length > 0 ? (

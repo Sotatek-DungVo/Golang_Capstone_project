@@ -1,6 +1,7 @@
 import api from "../../config/axios-instance";
 import { CreateGamePayload, GameListParams } from "./game.type";
 
+
 export const GameService = {
   async all(params: GameListParams) {
     try {
@@ -9,8 +10,8 @@ export const GameService = {
       });
 
       return res.data;
-    } catch (error) {
-      console.log("🚀 ~ all ~ error:", error);
+    } catch (error: any) {
+      throw new Error(error.message);
     }
   },
 
@@ -19,8 +20,8 @@ export const GameService = {
       const res = await api.get(`/games/${gameId}`);
 
       return res.data;
-    } catch (error) {
-      console.log("🚀 ~ get ~ error:", error);
+    } catch (error: any) {
+      throw new Error(error.message);
     }
   },
 
@@ -31,8 +32,8 @@ export const GameService = {
       });
 
       return res.data;
-    } catch (error) {
-      console.log("🚀 ~ get ~ error:", error);
+    } catch (error: any) {
+      throw new Error(error.message);
     }
   },
 
@@ -41,6 +42,8 @@ export const GameService = {
       const res = await api.post("/games", payload);
 
       return res.data;
-    } catch (error) {}
+    } catch (error: any) {
+      throw new Error(error.message);
+    }
   },
 };

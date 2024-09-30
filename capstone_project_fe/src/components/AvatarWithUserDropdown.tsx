@@ -54,6 +54,9 @@ export function AvatarWithUserDropdown({
           onClick={() => {
             closeMenu();
             setLoginRes(null);
+
+            localStorage.removeItem("token")
+            localStorage.removeItem("userData")
           }}
           className={`flex items-center gap-2 rounded `}
         >

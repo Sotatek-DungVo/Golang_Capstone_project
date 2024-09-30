@@ -10,6 +10,7 @@ import {
 import { useState } from "react";
 import { AuthService } from "../../services/auth/auth.service";
 import { LoginResponse } from "../../services/auth/auth.type";
+import { toast } from "react-toastify";
 
 type LoginFormDialogProps = {
   open: boolean;
@@ -33,16 +34,30 @@ const LoginFormDialog: React.FC<LoginFormDialogProps> = ({
         password,
       });
 
-      localStorage.setItem("token", data.token);
+      if (data && data.token) {
+        toast.success("Login success");
 
-      setLoginRes({
-        username: data.username,
-        avatarUrl: data.avatarUrl,
-      });
+        setIdentifier("");
+        setPassword("");
 
-      handleOpen();
+        localStorage.setItem("token", data.token);
+        const userData = {
+          username: data.username,
+          avatarUrl: data.avatarUrl,
+        };
+
+        localStorage.setItem("userData", JSON.stringify(userData));
+        setLoginRes(userData);
+
+        handleOpen();
+      }
+
+      if (data && data.error) {
+        handleOpen();
+        toast.error(data.error);
+      }
     } catch (error) {
-      console.log("🚀 ~ handleLogin ~ error:", error);
+      toast.error("Something went wrong!");
     }
   };
 

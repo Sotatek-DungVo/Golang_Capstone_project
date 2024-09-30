@@ -2,7 +2,7 @@ import PlayerInfoCard from "./PlayerInfoCard";
 import { PlayerInfoDetail } from "../../services/player/player.type";
 
 type PlayerListProps = {
-  playerData: PlayerInfoDetail[];
+  playerData: PlayerInfoDetail[] | null;
 };
 
 const PlayerList: React.FC<PlayerListProps> = ({ playerData }) => {

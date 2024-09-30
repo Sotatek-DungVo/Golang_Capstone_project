@@ -58,7 +58,12 @@ const GameDialogForm: React.FC<GameDialogFormProps> = ({
 
       toast.success("Create new game success");
       handleOpen();
-    } catch (error) {}
+    } catch (error: any) {
+      handleOpen();
+      if (error.message) {
+        toast.error(error.message);
+      }
+    }
   };
 
   useEffect(() => {

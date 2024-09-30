@@ -8,6 +8,7 @@ import {
 import JoinedPlayerList from "./JoinedPlayerList";
 import { GameService } from "../../services/game/game.service";
 import { useState } from "react";
+import { toast } from "react-toastify";
 
 type GameDetailProps = {
   game: GameDetailAPI;
@@ -20,9 +21,13 @@ const GameDetail: React.FC<GameDetailProps> = ({ game }) => {
       setIsLoading(true);
       const data = await GameService.joinGame(game.id);
 
+      if (data) {
+        toast.success("Request to join this game is created");
+      }
+
       setIsLoading(false);
-    } catch (error) {
-      console.log("🚀 ~ handleClickJoinGame ~ error:", error);
+    } catch (error: any) {
+      toast.error(error.message);
       setIsLoading(false);
     }
   };

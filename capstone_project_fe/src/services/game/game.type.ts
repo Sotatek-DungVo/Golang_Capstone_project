@@ -43,3 +43,8 @@ export type CreateGamePayload = {
   requiredSkills: number[];
   name: string | undefined;
 };
+
+
+export type ErrorType = {
+  message: string;
+};

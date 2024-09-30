@@ -1,4 +1,4 @@
-import axios, { AxiosError, AxiosInstance } from "axios";
+import axios, { AxiosError, AxiosInstance, AxiosResponse } from "axios";
 
 const API_BASE_URL = "http://localhost:4000"; // Replace with your Go server's URL
 
@@ -16,7 +16,6 @@ api.interceptors.request.use(
     // Modify the request config here (add headers, authentication tokens)
 
     const token = localStorage.getItem("token");
-    console.log("🚀 ~ token:", token)
 
     if (!token) {
       return config;
@@ -37,5 +36,17 @@ api.interceptors.request.use(
     return Promise.reject(error);
   }
 );
+
+api.interceptors.response.use(
+  (response: AxiosResponse) => {
+    // Modify the response data here
+    return response;
+  },
+  (error: AxiosError) => {
+    // Handle response errors here
+    return Promise.reject(error.response?.data);
+  },
+);
+
 
 export default api;

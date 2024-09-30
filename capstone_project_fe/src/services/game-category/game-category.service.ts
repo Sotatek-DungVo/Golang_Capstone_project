@@ -11,7 +11,6 @@ export const GameCategoryService = {
           Accept: "application/json",
         },
       });
-      console.log("🚀 ~ all ~ res:", res);
 
       return res.data;
     } catch (error) {

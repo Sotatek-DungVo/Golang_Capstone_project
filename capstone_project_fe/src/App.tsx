@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./App.css";
 import { IoGameController } from "react-icons/io5";
 import { Button } from "@material-tailwind/react";
@@ -13,7 +13,16 @@ function App() {
   const handleOpen = () => setOpenForm(!openForm);
   const navigate = useNavigate();
   const [loginRes, setLoginRes] = useState<LoginResponse | null>(null);
+  const currentUser = localStorage.getItem("userData");
 
+  useEffect(() => {
+    if (currentUser) {
+      const userData = JSON.parse(currentUser);
+
+      setLoginRes(userData)
+    }
+  }, [])
+  
   return (
     <div className="flex flex-col min-h-screen">
       {/* Header */}
