@@ -1,0 +1,814 @@
+definitions:
+  category.GameCategoryCreateDTO:
+    properties:
+      imageUrl:
+        type: string
+      name:
+        type: string
+    required:
+    - imageUrl
+    - name
+    type: object
+  category.GameCategoryResponseDTO:
+    properties:
+      createdAt:
+        type: string
+      id:
+        type: integer
+      imageUrl:
+        type: string
+      name:
+        type: string
+      updatedAt:
+        type: string
+    type: object
+  dto.LoginDTO:
+    properties:
+      identifier:
+        type: string
+      password:
+        type: string
+    required:
+    - identifier
+    - password
+    type: object
+  dto.LoginResponseDTO:
+    properties:
+      avatarUrl:
+        type: string
+      token:
+        type: string
+      username:
+        type: string
+    type: object
+  dto.RegisterDTO:
+    properties:
+      avatarUrl:
+        type: string
+      description:
+        type: string
+      email:
+        type: string
+      gender:
+        enum:
+        - MALE
+        - FEMALE
+        type: string
+      password:
+        type: string
+      username:
+        type: string
+    required:
+    - avatarUrl
+    - description
+    - email
+    - gender
+    - password
+    - username
+    type: object
+  dto.RegisterResponseDTO:
+    properties:
+      email:
+        type: string
+      username:
+        type: string
+    type: object
+  game.GameCategoryDTO:
+    properties:
+      id:
+        example: 1
+        type: integer
+      imageUrl:
+        type: string
+      name:
+        example: Strategy
+        type: string
+    type: object
+  game.GameCreateDTO:
+    properties:
+      endTime:
+        example: "2023-04-01T18:00:00Z"
+        type: string
+      gameCategoryId:
+        example: 1
+        type: integer
+      maxMember:
+        example: 10
+        type: integer
+      name:
+        example: Chess Tournament
+        type: string
+      requiredSkills:
+        items:
+          type: integer
+        type: array
+      startTime:
+        example: "2023-04-01T10:00:00Z"
+        type: string
+    required:
+    - endTime
+    - gameCategoryId
+    - maxMember
+    - name
+    - startTime
+    type: object
+  game.GameRequestCreateDTO:
+    properties:
+      gameId:
+        example: 1
+        type: integer
+    required:
+    - gameId
+    type: object
+  game.GameRequestDTO:
+    properties:
+      id:
+        example: 1
+        type: integer
+      status:
+        example: pending
+        type: string
+      user:
+        $ref: '#/definitions/game.UserDTO'
+    type: object
+  game.GameRequestResponseDTO:
+    properties:
+      gameId:
+        example: 1
+        type: integer
+      id:
+        example: 1
+        type: integer
+      status:
+        example: pending
+        type: string
+      userId:
+        example: 1
+        type: integer
+    type: object
+  game.GameRequestUpdateDTO:
+    properties:
+      status:
+        example: accepted
+        type: string
+    required:
+    - status
+    type: object
+  game.GameResponseDTO:
+    properties:
+      createdAt:
+        example: "2023-03-30T12:00:00Z"
+        type: string
+      endTime:
+        example: "2023-04-01T18:00:00Z"
+        type: string
+      gameCategory:
+        $ref: '#/definitions/game.GameCategoryDTO'
+      gameOwner:
+        $ref: '#/definitions/game.UserDTO'
+      gameRequests:
+        items:
+          $ref: '#/definitions/game.GameRequestDTO'
+        type: array
+      id:
+        example: 1
+        type: integer
+      maxMember:
+        example: 10
+        type: integer
+      name:
+        example: Chess Tournament
+        type: string
+      requiredSkills:
+        items:
+          $ref: '#/definitions/game.RequiredSkillDTO'
+        type: array
+      startTime:
+        example: "2023-04-01T10:00:00Z"
+        type: string
+      updatedAt:
+        example: "2023-03-30T12:00:00Z"
+        type: string
+    type: object
+  game.GameUpdateDTO:
+    properties:
+      categories:
+        items:
+          type: integer
+        type: array
+      endTime:
+        example: "2023-04-01T19:00:00Z"
+        type: string
+      maxMember:
+        example: 12
+        type: integer
+      name:
+        example: Updated Chess Tournament
+        type: string
+      requiredSkills:
+        items:
+          type: integer
+        type: array
+      startTime:
+        example: "2023-04-01T11:00:00Z"
+        type: string
+    type: object
+  game.RequiredSkillCreateDTO:
+    properties:
+      skills:
+        items:
+          type: string
+        type: array
+    required:
+    - skills
+    type: object
+  game.RequiredSkillDTO:
+    properties:
+      id:
+        example: 1
+        type: integer
+      label:
+        example: Problem Solving
+        type: string
+      name:
+        example: Problem Solving
+        type: string
+      value:
+        example: Problem Solving
+        type: string
+    type: object
+  game.UserDTO:
+    properties:
+      avatarUrl:
+        example: https://example.com/avatar.jpg
+        type: string
+      id:
+        example: 1
+        type: integer
+      username:
+        example: john_doe
+        type: string
+    type: object
+  handlers.ErrorResponse:
+    properties:
+      message:
+        type: string
+    type: object
+  models.Gender:
+    enum:
+    - MALE
+    - FEMALE
+    type: string
+    x-enum-varnames:
+    - MALE
+    - FEMALE
+  user.UserResponseDTO:
+    properties:
+      avatarUrl:
+        type: string
+      created_at:
+        type: string
+      description:
+        type: string
+      email:
+        type: string
+      gender:
+        $ref: '#/definitions/models.Gender'
+      id:
+        type: integer
+      updated_at:
+        type: string
+      username:
+        type: string
+    type: object
+info:
+  contact: {}
+paths:
+  /auth/login:
+    post:
+      consumes:
+      - application/json
+      description: Login with username/email and password
+      parameters:
+      - description: Login credentials
+        in: body
+        name: credentials
+        required: true
+        schema:
+          $ref: '#/definitions/dto.LoginDTO'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.LoginResponseDTO'
+      summary: Login user
+      tags:
+      - auth
+  /auth/register:
+    post:
+      consumes:
+      - application/json
+      description: Create a new user with the provided information
+      parameters:
+      - description: User registration information
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/dto.RegisterDTO'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/dto.RegisterResponseDTO'
+      summary: Create a new user
+      tags:
+      - auth
+  /game-categories:
+    get:
+      consumes:
+      - application/json
+      description: Get a list of all game categories with pagination
+      parameters:
+      - default: 1
+        description: Page number
+        in: query
+        name: page
+        type: integer
+      - default: 10
+        description: Number of items per page
+        in: query
+        name: limit
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/category.GameCategoryResponseDTO'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handlers.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handlers.ErrorResponse'
+      summary: List all game categories with pagination
+      tags:
+      - game-categories
+    post:
+      consumes:
+      - application/json
+      description: Create a new game category with the provided details
+      parameters:
+      - description: Game category details
+        in: body
+        name: category
+        required: true
+        schema:
+          $ref: '#/definitions/category.GameCategoryCreateDTO'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/category.GameCategoryResponseDTO'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handlers.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handlers.ErrorResponse'
+      summary: Create a new game category
+      tags:
+      - game-categories
+  /game-requests:
+    post:
+      consumes:
+      - application/json
+      description: Create a new game request with status pending
+      parameters:
+      - default: Bearer <Add access token here>
+        description: Bearer token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Game request details
+        in: body
+        name: gameRequest
+        required: true
+        schema:
+          $ref: '#/definitions/game.GameRequestCreateDTO'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/game.GameRequestResponseDTO'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handlers.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/handlers.ErrorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/handlers.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handlers.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Create a new game request
+      tags:
+      - game-requests
+  /game-requests/{id}:
+    put:
+      consumes:
+      - application/json
+      description: Approve or reject a game request
+      parameters:
+      - default: Bearer <Add access token here>
+        description: Bearer token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Game Request ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Game request details to update
+        in: body
+        name: gameRequest
+        required: true
+        schema:
+          $ref: '#/definitions/game.GameRequestUpdateDTO'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/game.GameRequestResponseDTO'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handlers.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/handlers.ErrorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/handlers.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/handlers.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handlers.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Update a game request
+      tags:
+      - game-requests
+  /games:
+    get:
+      consumes:
+      - application/json
+      description: Get a list of all games with pagination, including game category
+        details, required skills, and game requests
+      parameters:
+      - default: 1
+        description: Page number
+        in: query
+        name: page
+        type: integer
+      - default: 10
+        description: Number of items per page
+        in: query
+        name: limit
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/game.GameResponseDTO'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handlers.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handlers.ErrorResponse'
+      summary: List all games with pagination
+      tags:
+      - games
+    post:
+      consumes:
+      - application/json
+      description: Create a new game with the provided details
+      parameters:
+      - default: Bearer <Add access token here>
+        description: Bearer token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Game details
+        in: body
+        name: game
+        required: true
+        schema:
+          $ref: '#/definitions/game.GameCreateDTO'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/game.GameResponseDTO'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handlers.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/handlers.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handlers.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Create a new game
+      tags:
+      - games
+  /games/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete a game by its ID
+      parameters:
+      - default: Bearer <Add access token here>
+        description: Bearer token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Game ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handlers.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/handlers.ErrorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/handlers.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/handlers.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handlers.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Delete a game
+      tags:
+      - games
+    get:
+      consumes:
+      - application/json
+      description: Get details of a game by its ID, including game category, required
+        skills, game owner, and game requests
+      parameters:
+      - description: Game ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/game.GameResponseDTO'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/handlers.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handlers.ErrorResponse'
+      summary: Get a game by ID
+      tags:
+      - games
+    put:
+      consumes:
+      - application/json
+      description: Update a game with the provided details
+      parameters:
+      - default: Bearer <Add access token here>
+        description: Bearer token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Game ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Game details to update
+        in: body
+        name: game
+        required: true
+        schema:
+          $ref: '#/definitions/game.GameUpdateDTO'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/game.GameResponseDTO'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handlers.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/handlers.ErrorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/handlers.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/handlers.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handlers.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Update a game
+      tags:
+      - games
+  /players:
+    get:
+      consumes:
+      - application/json
+      description: Get a list of all users with pagination and search by username
+        and gender
+      parameters:
+      - default: 1
+        description: Page number
+        in: query
+        name: page
+        type: integer
+      - default: 10
+        description: Number of items per page
+        in: query
+        name: limit
+        type: integer
+      - description: Search by username
+        in: query
+        name: username
+        type: string
+      - description: Search by gender (MALE or FEMALE)
+        in: query
+        name: gender
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/user.UserResponseDTO'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handlers.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handlers.ErrorResponse'
+      summary: List all users with pagination and search
+      tags:
+      - users
+  /required-skills:
+    get:
+      consumes:
+      - application/json
+      description: Get a list of all required skills from the database
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/game.RequiredSkillDTO'
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handlers.ErrorResponse'
+      summary: List all required skills
+      tags:
+      - required-skills
+    post:
+      consumes:
+      - application/json
+      description: Create multiple new required skills (requires user login)
+      parameters:
+      - default: Bearer <Add access token here>
+        description: Bearer token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Required skills details
+        in: body
+        name: skills
+        required: true
+        schema:
+          $ref: '#/definitions/game.RequiredSkillCreateDTO'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            items:
+              $ref: '#/definitions/game.RequiredSkillDTO'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handlers.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/handlers.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handlers.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Create multiple new required skills
+      tags:
+      - required-skills
+swagger: "2.0"
