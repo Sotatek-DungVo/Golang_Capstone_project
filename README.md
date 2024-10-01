@@ -13,7 +13,7 @@ Move to server folder
 ```
 Install packages
 ```
- go install
+ go mod tidy
 ```
 Install postgres image
 ```
