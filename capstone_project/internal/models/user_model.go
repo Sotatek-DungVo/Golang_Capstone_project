@@ -7,6 +7,7 @@ import (
 type Gender string
 
 const (
+	// Should change name constant MALE -> Male, FEMALE -> Female
 	MALE   Gender = "MALE"
 	FEMALE Gender = "FEMALE"
 )
